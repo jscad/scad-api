@@ -47,8 +47,23 @@ npm run build
 
 ## Usage
 
+this api is included by default in http://openjscad.org/ but you can also use it 'standalone'
+
+```javascript
+const scadApi = require('jscad-scad-api')
+
+const {cube, sphere} = scadApi.primitives3d
+const {union} = scadApi.booleanOps
+
+const base = cube({size: 1, center: true})
+const top = sphere({r: 10, fn: 100, type: 'geodesic'})
+
+const result = union(base, top)
+
 ```
-```
+
+for now please see the OpenJsCad userguide https://en.wikibooks.org/wiki/OpenJSCAD_User_Guide
+for more information about the API
 
 
 ## Contribute
