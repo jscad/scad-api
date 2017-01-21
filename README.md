@@ -7,9 +7,9 @@
 [![devDependency Status](https://david-dm.org/jscad/jscad-scad-api/dev-status.svg)](https://david-dm.org/jscad/jscad-scad-api#info=devDependencies)
 
 
-> Openscad like api for openjscad & co
+> OpenSCAD like modeling api for OpenJSCAD & co
 
-This package provides an [openSCAD](http://www.openscad.org/) like api for [openJSCAD](openjscad.org) & co, it currently wraps 'low' level CSG/CAG objects
+This package provides an [OpenSCAD](http://www.openscad.org/) like modeling api for [OpenJSCAD](openjscad.org) & co, it currently wraps 'low' level CSG/CAG objects
 
 ## Table of Contents
 
@@ -23,8 +23,8 @@ This package provides an [openSCAD](http://www.openscad.org/) like api for [open
 ## Background
 
 This is a package that provides an opinionated api on top of [CSG.js](https://github.com/jscad/csg.js)
-more functional oriented, and that tried to mimic (up to a point) the api of openSCAD.
-It used to be part of [openJSCAD.ORG](https://github.com/Spiritdude/OpenJSCAD.org) but is now an
+more functional oriented, and that tried to mimic (up to a point) the api of OpenSCAD.
+It used to be part of [OpenJSCAD.ORG](https://github.com/Spiritdude/OpenJSCAD.org) but is now an
 'independent' module, to make usage and development easier.
 
 It gives you ONE variant of syntaxic sugar/ flavor to do solid modeling.
