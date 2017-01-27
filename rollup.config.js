@@ -6,7 +6,7 @@ export default {
   entry: 'src/index.js',
   dest: 'dist/index.js',
   format: 'cjs',
-  moduleName: 'jscad-scad-api',
+  moduleName: 'scad-api',
   sourceMap: true,
   external: [
     'csg'

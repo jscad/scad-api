@@ -1,15 +1,15 @@
-# jscad-scad-api
+# scad-api
 
-[![GitHub version](https://badge.fury.io/gh/jscad%2Fjscad-scad-api.svg)](https://badge.fury.io/gh/jscad%2Fjscad-scad-api)
+[![GitHub version](https://badge.fury.io/gh/jscad%2Fscad-api.svg)](https://badge.fury.io/gh/jscad%2Fscad-api)
 [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
-[![Build Status](https://travis-ci.org/jscad/jscad-scad-api.svg)](https://travis-ci.org/jscad/jscad-scad-api)
-[![Dependency Status](https://david-dm.org/jscad/jscad-scad-api.svg)](https://david-dm.org/jscad/jscad-scad-api)
-[![devDependency Status](https://david-dm.org/jscad/jscad-scad-api/dev-status.svg)](https://david-dm.org/jscad/jscad-scad-api#info=devDependencies)
+[![Build Status](https://travis-ci.org/jscad/scad-api.svg)](https://travis-ci.org/jscad/scad-api)
+[![Dependency Status](https://david-dm.org/jscad/scad-api.svg)](https://david-dm.org/jscad/scad-api)
+[![devDependency Status](https://david-dm.org/jscad/scad-api/dev-status.svg)](https://david-dm.org/jscad/scad-api#info=devDependencies)
 
 
 > OpenSCAD like modeling api for OpenJSCAD & co
 
-This package provides an [OpenSCAD](http://www.openscad.org/) like modeling api for [OpenJSCAD](openjscad.org) & co, it currently wraps 'low' level CSG/CAG objects
+This package provides an [OpenSCAD](http://www.scad.org/) like modeling api for [OpenJSCAD](openjscad.org) & co, it currently wraps 'low' level CSG/CAG objects
 
 ## Table of Contents
 
@@ -36,7 +36,7 @@ It is using semantic versioning to signal minor and breaking changes.
 
 
 ```
-npm install jscad/jscad-scad-api
+npm install jscad/scad-api
 ```
 
 ### build distributable
@@ -50,7 +50,7 @@ npm run build
 this api is included by default in http://openjscad.org/ but you can also use it 'standalone'
 
 ```javascript
-const scadApi = require('jscad-scad-api')
+const scadApi = require('scad-api')
 
 const {cube, sphere} = scadApi.primitives3d
 const {union} = scadApi.booleanOps
@@ -75,5 +75,5 @@ Small note: If editing the Readme, please conform to the [standard-readme](https
 
 ## License
 
-[The MIT License (MIT)](https://github.com/jscad/jscad-scad-api/blob/master/LICENSE)
+[The MIT License (MIT)](https://github.com/jscad/scad-api/blob/master/LICENSE)
 (unless specified otherwise)
