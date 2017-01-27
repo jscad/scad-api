@@ -26,6 +26,12 @@
       "url": "http://kaosat.net"
     }
   ],
+  "keywords": [
+    "openscad",
+    "openjscad",
+    "jscad",
+    "parametric"
+  ],
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {

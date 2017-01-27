@@ -36,7 +36,7 @@ It is using semantic versioning to signal minor and breaking changes.
 
 
 ```
-npm install jscad/scad-api
+npm install @jscad/scad-api
 ```
 
 ### build distributable
