@@ -7,7 +7,7 @@ export default {
   dest: 'dist/index.js',
   format: 'cjs',
   moduleName: 'scad-api',
-  sourceMap: true,
+  sourceMap: 'true',
   external: [
     'csg'
   ],
@@ -19,7 +19,7 @@ export default {
     }),
     commonjs({
       namedExports: {
-        'node_modules/csg/csg.js': [ 'CSG', 'CAG' ]
+        '@jscad/csg': [ 'CSG', 'CAG' ]
       }
     })
   ]
