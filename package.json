@@ -8,9 +8,9 @@
   "scripts": {
     "test": "ava './src/**/*.test.js' --require babel-register --verbose",
     "build": "rollup -c rollup.config.js",
-    "release-patch": "git checkout master; npm version patch && npm run build; git commit -a -m 'chore(dist): built dist/'; git push origin master --tags ",
-    "release-minor": "git checkout master; npm version minor && npm run build; git commit -a -m 'chore(dist): built dist/'; git push origin master --tags ",
-    "release-major": "git checkout master; npm version major && npm run build; git commit -a -m 'chore(dist): built dist/'; git push origin master --tags "
+    "release-patch": "git checkout master; npm run build && npm version patch && npm run build; git commit -a -m 'chore(dist): built dist/'; git push origin master --tags ",
+    "release-minor": "git checkout master; npm run build && npm version minor && npm run build; git commit -a -m 'chore(dist): built dist/'; git push origin master --tags ",
+    "release-major": "git checkout master; npm run build && npm version major && npm run build; git commit -a -m 'chore(dist): built dist/'; git push origin master --tags "
   },
   "contributors": [
     {
@@ -30,7 +30,10 @@
     "openscad",
     "openjscad",
     "jscad",
-    "parametric"
+    "parametric",
+    "modeling",
+    "cad",
+    "api"
   ],
   "license": "MIT",
   "dependencies": {},
