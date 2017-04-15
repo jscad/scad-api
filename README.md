@@ -50,7 +50,7 @@ npm run build
 this api is included by default in http://openjscad.org/ but you can also use it 'standalone'
 
 ```javascript
-const scadApi = require('scad-api')
+const scadApi = require('@jscad/scad-api')
 
 const {cube, sphere} = scadApi.primitives3d
 const {union} = scadApi.booleanOps
