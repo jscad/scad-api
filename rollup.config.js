@@ -6,10 +6,10 @@ export default {
   entry: 'src/index.js',
   dest: 'dist/index.js',
   format: 'cjs',
-  moduleName: 'scad-api',
+  moduleName: '@jscad/scad-api',
   sourceMap: 'true',
   external: [
-    'csg'
+    '@jscad/csg'
   ],
   plugins: [
     buble(),
@@ -19,7 +19,7 @@ export default {
     }),
     commonjs({
       namedExports: {
-        '@jscad/csg': [ 'CSG', 'CAG' ]
+        'node_modules/@jscad/csg': [ 'CSG', 'CAG' ]
       }
     })
   ]
