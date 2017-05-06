@@ -1,15 +1,15 @@
 # scad-api
 
 [![GitHub version](https://badge.fury.io/gh/jscad%2Fscad-api.svg)](https://badge.fury.io/gh/jscad%2Fscad-api)
-[![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
+[![EXPERIMENTAL](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 [![Build Status](https://travis-ci.org/jscad/scad-api.svg)](https://travis-ci.org/jscad/scad-api)
 [![Dependency Status](https://david-dm.org/jscad/scad-api.svg)](https://david-dm.org/jscad/scad-api)
 [![devDependency Status](https://david-dm.org/jscad/scad-api/dev-status.svg)](https://david-dm.org/jscad/scad-api#info=devDependencies)
 
 
-> OpenSCAD like modeling api for OpenJSCAD & co
+> OpenSCAD like modeling API for OpenJSCAD
 
-This package provides an [OpenSCAD](http://www.scad.org/) like modeling api for [OpenJSCAD](openjscad.org) & co, it currently wraps 'low' level CSG/CAG objects
+This package provides [OpenSCAD](http://www.openscad.org/) functionality for [OpenJSCAD](openjscad.org) & Co.
 
 ## Table of Contents
 
@@ -22,24 +22,21 @@ This package provides an [OpenSCAD](http://www.scad.org/) like modeling api for 
 
 ## Background
 
-This is a package that provides an opinionated api on top of [CSG.js](https://github.com/jscad/csg.js)
-more functional oriented, and that tried to mimic (up to a point) the api of OpenSCAD.
-It used to be part of [OpenJSCAD.ORG](https://github.com/Spiritdude/OpenJSCAD.org) but is now an
-'independent' module, to make usage and development easier.
+This package provides an opinionated API that tries to mimic (up to a point) that of [OpenSCAD](http://www.openscad.org/). Currently, this package uses the [CSG.js](https://github.com/jscad/csg.js) library to implement most functionality.
+
+This package was part of [OpenJSCAD.ORG](https://github.com/Spiritdude/OpenJSCAD.org) but is now an 'independent' module in the JSCAD organization. Hopefully, this makes usage and development easier.
 
 It gives you ONE variant of syntaxic sugar/ flavor to do solid modeling.
 
 It is using semantic versioning to signal minor and breaking changes.
 
-
 ## Installation
-
 
 ```
 npm install @jscad/scad-api
 ```
 
-### build distributable
+### Build Distributable
 
 ```
 npm run build
@@ -47,7 +44,7 @@ npm run build
 
 ## Usage
 
-this api is included by default in http://openjscad.org/ but you can also use it 'standalone'
+This package is included by default in [OpenJSCAD.org](http://openjscad.org/) but you can also use it 'standalone'.
 
 ```javascript
 const scadApi = require('@jscad/scad-api')
@@ -62,18 +59,32 @@ const result = union(base, top)
 
 ```
 
-for now please see the OpenJsCad userguide https://en.wikibooks.org/wiki/OpenJSCAD_User_Guide
-for more information about the API
+## API
 
+See the [OpenJsCad User Guide](https://en.wikibooks.org/wiki/OpenJSCAD_User_Guide).
+
+For questions about the API, please contact the [User Group](https://plus.google.com/communities/114958480887231067224)
 
 ## Contribute
 
-PRs accepted.
+This library is part of the JSCAD Organization, and is maintained by a group of volunteers. We welcome and encourage anyone to pitch in but please take a moment to read the following guidelines.
 
-Small note: If editing the Readme, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
+* If you want to submit a bug report please make sure to follow the [Reporting Issues](https://github.com/jscad/scad-api/wiki/Reporting-Issues) guide. Bug reports are accepted as [Issues](https://github.com/jscad/scad-api/issues/) via GitHub.
+
+* If you want to submit a change or a patch, please see the [Contributing guidelines](https://github.com/jscad/scad-api/blob/master/CONTRIBUTING.md). New contributions are accepted as [Pull Requests](https://github.com/jscad/scad-api/pulls/) via GithHub.
+
+* We only accept bug reports and pull requests on **GitHub**.
+
+* If you have a question about how to use CSG.js, then please start a conversation at the [OpenJSCAD.org User Group](https://plus.google.com/communities/114958480887231067224). You might find the answer in the [OpenJSCAD.org User Guide](https://github.com/Spiritdude/OpenJSCAD.org/wiki/User-Guide).
+
+* If you have a change or new feature in mind, please start a conversation with the [Core Developers](https://plus.google.com/communities/114958480887231067224) and start contributing changes.
+
+Small Note: If editing the Readme, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
 
 
 ## License
 
 [The MIT License (MIT)](https://github.com/jscad/scad-api/blob/master/LICENSE)
 (unless specified otherwise)
+
+NOTE: OpenSCAD and OpenSCAD API are released under the General Public License version 2.
