@@ -36,12 +36,6 @@ It is using semantic versioning to signal minor and breaking changes.
 npm install @jscad/scad-api
 ```
 
-### Build Distributable
-
-```
-npm run build
-```
-
 ## Usage
 
 This package is included by default in [OpenJSCAD.org](http://openjscad.org/) but you can also use it 'standalone'.

@@ -4,7 +4,7 @@
 
 This library is part of the JSCAD Organization, and is maintained by a group of volunteers. We welcome and encourage anyone to pitch in but please take a moment to read the following guidelines.
 
-* If you want to submit a bug report please make sure to follow the [Reporting Issues](https://github.com/jscad/csg.js/wiki/Reporting-Issues) guide. Bug reports are accepted as [Issues](https://github.com/jscad/scad-api/issues/) via GitHub.
+* If you want to submit a bug report please make sure to follow the [Reporting Issues](https://github.com/jscad/scad-api/wiki/Reporting-Issues) guide. Bug reports are accepted as [Issues](https://github.com/jscad/scad-api/issues/) via GitHub.
 
 * If you want to submit a change or a patch, please read the contents below on how to make changes. New contributions are accepted as [Pull Requests](https://github.com/jscad/scad-api/pulls/) via GithHub.
 
@@ -37,10 +37,6 @@ npm install
 And, run the test cases to verify the library is functional.
 ```
 npm test
-```
-And, create the distribution.
-```
-npm run build
 ```
 
 The project is structured as:
