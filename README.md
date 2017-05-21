@@ -59,6 +59,9 @@ See the [OpenJsCad User Guide](https://en.wikibooks.org/wiki/OpenJSCAD_User_Guid
 
 For questions about the API, please contact the [User Group](https://plus.google.com/communities/114958480887231067224)
 
+>NOTE: at this time combined union() of 2d & 3d shapes is not **officially** supported
+but still possible via union({extrude2d: true}, op1, op2) this might change in the future
+
 ## Contribute
 
 This library is part of the JSCAD Organization, and is maintained by a group of volunteers. We welcome and encourage anyone to pitch in but please take a moment to read the following guidelines.
