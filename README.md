@@ -2,7 +2,7 @@
 
 [![GitHub version](https://badge.fury.io/gh/jscad%2Fscad-api.svg)](https://badge.fury.io/gh/jscad%2Fscad-api)
 [![EXPERIMENTAL](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
-[![Build Status](https://travis-ci.org/jscad/scad-api.svg)](https://travis-ci.org/jscad/scad-api)
+[![Build Status](https://travis-ci.org/jscad/scad-api.svg?branch=master)](https://travis-ci.org/jscad/scad-api)
 [![Dependency Status](https://david-dm.org/jscad/scad-api.svg)](https://david-dm.org/jscad/scad-api)
 [![devDependency Status](https://david-dm.org/jscad/scad-api/dev-status.svg)](https://david-dm.org/jscad/scad-api#info=devDependencies)
 
@@ -55,7 +55,8 @@ const result = union(base, top)
 
 ## API
 
-See the [OpenJsCad User Guide](https://en.wikibooks.org/wiki/OpenJSCAD_User_Guide).
+The API documentation (incomplete) can be found [here](./docs/api.md)
+For more information, see the [OpenJsCad User Guide](https://en.wikibooks.org/wiki/OpenJSCAD_User_Guide).
 
 For questions about the API, please contact the [User Group](https://plus.google.com/communities/114958480887231067224)
 
