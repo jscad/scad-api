@@ -1,6 +1,6 @@
 {
   "name": "@jscad/scad-api",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "OpenSCAD like modeling api for OpenJSCAD & co",
   "repository": "https://github.com/jscad/scad-api",
   "main": "src/index.js",
