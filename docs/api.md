@@ -45,7 +45,7 @@ Conversion forumla:</p>
 <li>return HTML formatted string &quot;#RRGGBB&quot;</li>
 </ul>
 </dd>
-<dt><a href="#rotate_extrude">rotate_extrude([options])</a> ⇒ <code>CSG</code></dt>
+<dt><a href="#rotate_extrude">rotate_extrude([options], baseShape)</a> ⇒ <code>CSG</code></dt>
 <dd><p>rotate extrude / revolve</p>
 </dd>
 <dt><a href="#torus">torus([options])</a> ⇒ <code>CSG</code></dt>
@@ -154,7 +154,7 @@ Conversion forumla:
 **Kind**: global function  
 <a name="rotate_extrude"></a>
 
-## rotate_extrude([options]) ⇒ <code>CSG</code>
+## rotate_extrude([options], baseShape) ⇒ <code>CSG</code>
 rotate extrude / revolve
 
 **Kind**: global function  
@@ -167,6 +167,7 @@ rotate extrude / revolve
 | [options.startAngle] | <code>Float</code> | <code>1</code> | start angle of the extrusion, in degrees |
 | [options.angle] | <code>Float</code> | <code>1</code> | angle of the extrusion, in degrees |
 | [options.overflow] | <code>Float</code> | <code>&#x27;cap&#x27;</code> | what to do with points outside of bounds (+ / - x) : defaults to capping those points to 0 (only supported behaviour for now) |
+| baseShape | <code>CAG</code> |  | input 2d shape |
 
 **Example**  
 ```js
