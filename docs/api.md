@@ -45,6 +45,12 @@ Conversion forumla:</p>
 <li>return HTML formatted string &quot;#RRGGBB&quot;</li>
 </ul>
 </dd>
+<dt><a href="#rotate_extrude">rotate_extrude([options])</a> ⇒ <code>CSG</code></dt>
+<dd><p>rotate extrude / revolve</p>
+</dd>
+<dt><a href="#torus">torus([options])</a> ⇒ <code>CSG</code></dt>
+<dd><p>Construct a torus</p>
+</dd>
 </dl>
 
 <a name="css2rgb"></a>
@@ -146,3 +152,46 @@ Conversion forumla:
 - return HTML formatted string "#RRGGBB"
 
 **Kind**: global function  
+<a name="rotate_extrude"></a>
+
+## rotate_extrude([options]) ⇒ <code>CSG</code>
+rotate extrude / revolve
+
+**Kind**: global function  
+**Returns**: <code>CSG</code> - new extruded shape  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [options] | <code>Object</code> |  | options for construction |
+| [options.fn] | <code>Integer</code> | <code>1</code> | resolution/number of segments of the extrusion |
+| [options.startAngle] | <code>Float</code> | <code>1</code> | start angle of the extrusion, in degrees |
+| [options.angle] | <code>Float</code> | <code>1</code> | angle of the extrusion, in degrees |
+| [options.overflow] | <code>Float</code> | <code>&#x27;cap&#x27;</code> | what to do with points outside of bounds (+ / - x) : defaults to capping those points to 0 (only supported behaviour for now) |
+
+**Example**  
+```js
+let revolved = rotate_extrude({fn: 10}, square())
+```
+<a name="torus"></a>
+
+## torus([options]) ⇒ <code>CSG</code>
+Construct a torus
+
+**Kind**: global function  
+**Returns**: <code>CSG</code> - new torus  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [options] | <code>Object</code> |  | options for construction |
+| [options.ri] | <code>Float</code> | <code>1</code> | radius of base circle |
+| [options.ro] | <code>Float</code> | <code>4</code> | radius offset |
+| [options.fni] | <code>Integer</code> | <code>16</code> | segments of base circle (ie quality) |
+| [options.fno] | <code>Integer</code> | <code>32</code> | segments of extrusion (ie quality) |
+| [options.roti] | <code>Integer</code> | <code>0</code> | rotation angle of base circle |
+
+**Example**  
+```js
+let torus1 = torus({
+  ri: 10
+})
+```
