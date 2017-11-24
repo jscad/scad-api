@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "module": "src/index.js",
   "scripts": {
-    "test": "nyc ava './src/**/*.test.js' --verbose",
+    "test": "nyc ava './src/**/*.test.js' --verbose --timeout=1m",
     "docs": "jsdoc2md --files 'src/*.js' > docs/api.md",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "preversion": "npm test",
