@@ -2,31 +2,57 @@ const { CSG, CAG } = require('@jscad/csg')
 const { union } = require('./ops-booleans')
 // -- 3D transformations (OpenSCAD like notion)
 
-function translate () {      // v, obj or array
-  var a = arguments, v = a[0], o, i = 1
-  if (a[1].length) { a = a[1]; i = 0 }
-  for (o = a[i++]; i < a.length; i++) {
-    o = o.union(a[i])
+/** translate an object in 2D/3D space
+ * @param {Object} vector - 3D vector to translate the given object(s) by
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to translate
+ * @returns {CSG} new CSG object , translated by the given amount
+ *
+ * @example
+ * let movedSphere = translate([10,2,0], sphere())
+ */
+function translate (vector, objects) {      // v, obj or array
+  let object = objects
+  if (objects.length) {
+    for (let i = 0; i < objects.length; i++) { // FIXME/ why is union really needed ??
+      object = object.union(objects[i])
+    }
   }
-  return o.translate(v)
+  return object.translate(vector)
 }
 
-function center () { // v, obj or array
-  var a = arguments, v = a[0], o, i = 1
-  if (a[1].length) { a = a[1]; i = 0 }
-  for (o = a[i++]; i < a.length; i++) {
-    o = o.union(a[i])
+/** center an object in 2D/3D space
+ * @param {[Boolean]} axis - either an array or single boolean to indicate which axis you want to center on
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to translate
+ * @returns {CSG} new CSG object , translated by the given amount
+ *
+ * @example
+ * let movedSphere = center(false, sphere())
+ */
+function center (axis, objects) { // v, obj or array
+  let object = objects
+  if (objects.length) {
+    for (let i = 0; i < objects.length; i++) { // FIXME/ why is union really needed ??
+      object = object.union(objects[i])
+    }
   }
-  return o.center(v)
+  return object.center(axis)
 }
 
-function scale () {         // v, obj or array
+/** scale an object in 2D/3D space
+ * @param {[Boolean]} scale - either an array or simple number to scale object(s) by
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to translate
+ * @returns {CSG} new CSG object , translated by the given amount
+ *
+ * @example
+ * let scaledSphere = scale([0.2,15,1], sphere())
+ */
+function scale (scale, objects) {         // v, obj or array
   var a = arguments, v = a[0], o, i = 1
   if (a[1].length) { a = a[1]; i = 0 }
   for (o = a[i++]; i < a.length; i++) {
     o = o.union(a[i])
   }
-  return o.scale(v)
+  return o.scale(scale)
 }
 
 function rotate () {
@@ -44,7 +70,7 @@ function rotate () {
   for (o = a[i++]; i < a.length; i++) {
     o = o.union(a[i])
   }
-  if (r != 1) {
+  if (r !== 1) {
     return o.rotateX(v[0] * r).rotateY(v[1] * r).rotateZ(v[2] * r)
   } else {
     return o.rotateX(v[0]).rotateY(v[1]).rotateZ(v[2])
@@ -171,7 +197,7 @@ function hull () {
          // Find the lowest point
       var min = 0
       for (var i = 1; i < this.points.length; i++) {
-        if (this.points[i].y == this.points[min].y) {
+        if (this.points[i].y === this.points[min].y) {
           if (this.points[i].x < this.points[min].x) {
             min = i
           }
