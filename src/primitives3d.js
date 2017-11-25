@@ -30,31 +30,30 @@ function cube (params) {
     fn: 8
   }
 
-  // const {sn v, offset, round, r, fn} = Object.assign({}, defaults, params)
-  // const offset = [0,0,0]
+  const {v, round, r, fn} = Object.assign({}, defaults, params)
+  let offset = [0, 0, 0]
 
-  var s = 1, v = null, offset = [0, 0, 0], round = false, r = 0, fn = 8
+  let s = 1, v = null, round = false, r = 0, fn = 8
   if (p && p.length) v = p
   if (p && p.size && p.size.length) v = p.size // { size: [1,2,3] }
   if (p && p.size && !p.size.length) s = p.size // { size: 1 }
   if (p && (typeof p !== 'object')) s = p// (2)
   if (p && p.round === true) { round = true, r = v && v.length ? (v[0] + v[1] + v[2]) / 30 : s / 10 }
   if (p && p.radius) { round = true, r = p.radius }
-  if (p && p.fn) fn = p.fn // applies in case of round: true
 
-  var x = s, y = s, z = s
+  let x = s, y = s, z = s
   if (v && v.length) {
     x = v[0], y = v[1], z = v[2]
   }
   offset = [x / 2, y / 2, z / 2] // center: false default
-  var o = round
+  let o = round
     ? CSG.roundedCube({radius: [x / 2, y / 2, z / 2], roundradius: r, resolution: fn})
     : CSG.cube({radius: [x / 2, y / 2, z / 2]})
   if (p && p.center && p.center.length) {
     offset = [p.center[0] ? 0 : x / 2, p.center[1] ? 0 : y / 2, p.center[2] ? 0 : z / 2]
-  } else if (p && p.center == true) {
+  } else if (p && p.center === true) {
     offset = [0, 0, 0]
-  } else if (p && p.center == false) {
+  } else if (p && p.center === false) {
     offset = [x / 2, y / 2, z / 2]
   }
   if (offset[0] || offset[1] || offset[2]) o = o.translate(offset)
@@ -86,7 +85,7 @@ function sphere (params) {
   let {r, fn, type} = Object.assign({}, defaults, params)
   let offset = [0, 0, 0] // center: false (default)
   if (params && (typeof params !== 'object')) r = params
-  // var zoffset = 0 // sphere() in openscad has no center:true|false
+  // let zoffset = 0 // sphere() in openscad has no center:true|false
 
   let output
   if (type === 'geodesic') {
@@ -106,9 +105,9 @@ function sphere (params) {
 }
 
 function geodesicSphere (params) {
-  var r = 1, fn = 5
+  let r = 1, fn = 5
 
-  var ci = [ // hard-coded data of icosahedron (20 faces, all triangles)
+  let ci = [ // hard-coded data of icosahedron (20 faces, all triangles)
     [0.850651, 0.000000, -0.525731],
     [0.850651, -0.000000, 0.525731],
     [-0.850651, -0.000000, 0.525731],
@@ -122,14 +121,14 @@ function geodesicSphere (params) {
     [0.525731, 0.850651, 0.000000],
     [-0.525731, 0.850651, 0.000000]]
 
-  var ti = [ [0, 9, 1], [1, 10, 0], [6, 7, 0], [10, 6, 0], [7, 9, 0], [5, 1, 4], [4, 1, 9], [5, 10, 1], [2, 8, 3], [3, 11, 2], [2, 5, 4],
+  let ti = [ [0, 9, 1], [1, 10, 0], [6, 7, 0], [10, 6, 0], [7, 9, 0], [5, 1, 4], [4, 1, 9], [5, 10, 1], [2, 8, 3], [3, 11, 2], [2, 5, 4],
     [4, 8, 2], [2, 11, 5], [3, 7, 6], [6, 11, 3], [8, 7, 3], [9, 8, 4], [11, 10, 5], [10, 11, 6], [8, 9, 7]]
 
-  var geodesicSubDivide = function (p, fn, offset) {
-    var p1 = p[0], p2 = p[1], p3 = p[2]
-    var n = offset
-    var c = []
-    var f = []
+  let geodesicSubDivide = function (p, fn, offset) {
+    let p1 = p[0], p2 = p[1], p3 = p[2]
+    let n = offset
+    let c = []
+    let f = []
 
     //           p3
     //           /\
@@ -140,23 +139,23 @@ function geodesicSphere (params) {
     //     0/__\/__\/__\
     //    p1 0   j      p2
 
-    for (var i = 0; i < fn; i++) {
-      for (var j = 0; j < fn - i; j++) {
-        var t0 = i / fn
-        var t1 = (i + 1) / fn
-        var s0 = j / (fn - i)
-        var s1 = (j + 1) / (fn - i)
-        var s2 = fn - i - 1 ? j / (fn - i - 1) : 1
-        var q = []
+    for (let i = 0; i < fn; i++) {
+      for (let j = 0; j < fn - i; j++) {
+        let t0 = i / fn
+        let t1 = (i + 1) / fn
+        let s0 = j / (fn - i)
+        let s1 = (j + 1) / (fn - i)
+        let s2 = fn - i - 1 ? j / (fn - i - 1) : 1
+        let q = []
 
         q[0] = mix3(mix3(p1, p2, s0), p3, t0)
         q[1] = mix3(mix3(p1, p2, s1), p3, t0)
         q[2] = mix3(mix3(p1, p2, s2), p3, t1)
 
         // -- normalize
-        for (var k = 0; k < 3; k++) {
-          var r = Math.sqrt(q[k][0] * q[k][0] + q[k][1] * q[k][1] + q[k][2] * q[k][2])
-          for (var l = 0; l < 3; l++) {
+        for (let k = 0; k < 3; k++) {
+          let r = Math.sqrt(q[k][0] * q[k][0] + q[k][1] * q[k][1] + q[k][2] * q[k][2])
+          for (let l = 0; l < 3; l++) {
             q[k][l] /= r
           }
         }
@@ -164,15 +163,15 @@ function geodesicSphere (params) {
         f.push([n, n + 1, n + 2]); n += 3
 
         if (j < fn - i - 1) {
-          var s3 = fn - i - 1 ? (j + 1) / (fn - i - 1) : 1
+          let s3 = fn - i - 1 ? (j + 1) / (fn - i - 1) : 1
           q[0] = mix3(mix3(p1, p2, s1), p3, t0)
           q[1] = mix3(mix3(p1, p2, s3), p3, t1)
           q[2] = mix3(mix3(p1, p2, s2), p3, t1)
 
           // -- normalize
-          for (var k = 0; k < 3; k++) {
-            var r = Math.sqrt(q[k][0] * q[k][0] + q[k][1] * q[k][1] + q[k][2] * q[k][2])
-            for (var l = 0; l < 3; l++) {
+          for (let k = 0; k < 3; k++) {
+            let r = Math.sqrt(q[k][0] * q[k][0] + q[k][1] * q[k][1] + q[k][2] * q[k][2])
+            for (let l = 0; l < 3; l++) {
               q[k][l] /= r
             }
           }
@@ -184,10 +183,10 @@ function geodesicSphere (params) {
     return { points: c, triangles: f, off: n }
   }
 
-  var mix3 = function (a, b, f) {
-    var _f = 1 - f
-    var c = []
-    for (var i = 0; i < 3; i++) {
+  let mix3 = function (a, b, f) {
+    let _f = 1 - f
+    let c = []
+    for (let i = 0; i < 3; i++) {
       c[i] = a[i] * _f + b[i] * f
     }
     return c
@@ -200,12 +199,12 @@ function geodesicSphere (params) {
 
   if (fn <= 0) fn = 1
 
-  var q = []
-  var c = [], f = []
-  var offset = 0
+  let q = []
+  let c = [], f = []
+  let offset = 0
 
-  for (var i = 0; i < ti.length; i++) {
-    var g = geodesicSubDivide([ ci[ti[i][0]], ci[ti[i][1]], ci[ti[i][2]]], fn, offset)
+  for (let i = 0; i < ti.length; i++) {
+    let g = geodesicSubDivide([ ci[ti[i][0]], ci[ti[i][1]], ci[ti[i][2]]], fn, offset)
     c = c.concat(g.points)
     f = f.concat(g.triangles)
     offset = g.offset
@@ -238,9 +237,9 @@ function cylinder (params) {
     fn: 32,
     round: false
   }
-  var r1 = 1, r2 = 1, h = 1, fn = 32, round = false
-  var a = arguments
-  var offset = [0, 0, 0]
+  let r1 = 1, r2 = 1, h = 1, fn = 32, round = false
+  let a = arguments
+  let offset = [0, 0, 0]
   if (p && p.d) {
     r1 = r2 = p.d / 2
   }
@@ -271,7 +270,7 @@ function cylinder (params) {
   if (p && p.fn) fn = p.fn
   // if(p&&p.center==true) zoffset = -h/2
   if (p && p.round === true) round = true
-  var o
+  let o
   if (p && (p.start && p.end)) {
     o = round
       ? CSG.roundedCylinder({start: p.start, end: p.end, radiusStart: r1, radiusEnd: r2, resolution: fn})
@@ -280,7 +279,7 @@ function cylinder (params) {
     o = round
       ? CSG.roundedCylinder({start: [0, 0, 0], end: [0, 0, h], radiusStart: r1, radiusEnd: r2, resolution: fn})
       : CSG.cylinder({start: [0, 0, 0], end: [0, 0, h], radiusStart: r1, radiusEnd: r2, resolution: fn})
-    var r = r1 > r2 ? r1 : r2
+    let r = r1 > r2 ? r1 : r2
     if (p && p.center && p.center.length) { // preparing individual x,y,z center
       offset = [p.center[0] ? 0 : r, p.center[1] ? 0 : r, p.center[2] ? -h / 2 : 0]
     } else if (p && p.center === true) {
@@ -336,27 +335,27 @@ function torus (params) {
 }
 
 function polyhedron (params) {
-  var pgs = []
-  var ref = p.triangles || p.polygons
-  var colors = p.colors || null
+  let pgs = []
+  let ref = p.triangles || p.polygons
+  let colors = p.colors || null
 
-  for (var i = 0; i < ref.length; i++) {
-    var pp = []
-    for (var j = 0; j < ref[i].length; j++) {
+  for (let i = 0; i < ref.length; i++) {
+    let pp = []
+    for (let j = 0; j < ref[i].length; j++) {
       pp[j] = p.points[ref[i][j]]
     }
 
-    var v = []
+    let v = []
     for (j = ref[i].length - 1; j >= 0; j--) { // --- we reverse order for examples of OpenSCAD work
       v.push(new CSG.Vertex(new CSG.Vector3D(pp[j][0], pp[j][1], pp[j][2])))
     }
-    var s = CSG.Polygon.defaultShared
+    let s = CSG.Polygon.defaultShared
     if (colors && colors[i]) {
       s = CSG.Polygon.Shared.fromColor(colors[i])
     }
     pgs.push(new CSG.Polygon(v, s))
   }
-  var r = CSG.fromPolygons(pgs)
+  let r = CSG.fromPolygons(pgs)
   return r
 }
 

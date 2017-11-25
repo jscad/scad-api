@@ -39,24 +39,37 @@ function center (axis, objects) { // v, obj or array
 }
 
 /** scale an object in 2D/3D space
- * @param {[Boolean]} scale - either an array or simple number to scale object(s) by
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to translate
- * @returns {CSG} new CSG object , translated by the given amount
+ * @param {[Array]} scale - either an array or simple number to scale object(s) by
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to scale
+ * @returns {CSG} new CSG object , scaled by the given amount
  *
  * @example
  * let scaledSphere = scale([0.2,15,1], sphere())
  */
 function scale (scale, objects) {         // v, obj or array
-  var a = arguments, v = a[0], o, i = 1
-  if (a[1].length) { a = a[1]; i = 0 }
-  for (o = a[i++]; i < a.length; i++) {
-    o = o.union(a[i])
+  let object = objects
+  if (objects.length) {
+    for (let i = 0; i < objects.length; i++) { // FIXME/ why is union really needed ??
+      object = object.union(objects[i])
+    }
   }
-  return o.scale(scale)
+  return object.scale(scale)
 }
 
-function rotate () {
-  var o, i, v, r = 1, a = arguments
+/** rotate an object in 2D/3D space
+ * @param {[Array]} rotation - either an array or simple number to rotate object(s) by
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to rotate
+ * @returns {CSG} new CSG object , rotated by the given amount
+ *
+ * @example
+ * let rotatedSphere = rotate([0.2,15,1], sphere())
+ */
+function rotate (rotation, objects) {
+  var o
+  var i
+  var v
+  var r = 1
+  var a = arguments
   if (!a[0].length) {        // rotate(r,[x,y,z],o)
     r = a[0]
     v = a[1]
@@ -77,6 +90,14 @@ function rotate () {
   }
 }
 
+/** mirror an object in 2D/3D space
+ * @param {[Array]} vector - the axes to mirror the object(s) by
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to mirror
+ * @returns {CSG} new CSG object , mirrored
+ *
+ * @example
+ * let rotatedSphere = mirror([0.2,15,1], sphere())
+ */
 function mirror (v, o) {
   var a = Array.prototype.slice.call(arguments, 1, arguments.length),
     o = a[0]
@@ -88,22 +109,68 @@ function mirror (v, o) {
   return o.mirrored(plane)
 }
 
+/** expand an object in 2D/3D space
+ * @param {[Array]} vector - the axes to mirror the object(s) by
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to mirror
+ * @returns {CSG} new CSG object , mirrored
+ *
+ * @example
+ * let expanededShape = expand([0.2,15,1], sphere())
+ */
 function expand (r, n, o) {
   return o.expand(r, n)
 }
 
+/** contract an object(s) in 2D/3D space
+ * @param {[Array]} vector - the axes to mirror the object(s) by
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to mirror
+ * @returns {CSG} new CSG object , mirrored
+ *
+ * @example
+ * let contractedShape = contract([0.2,15,1], sphere())
+ */
 function contract (r, n, o) {
   return o.contract(r, n)
 }
 
+/** apply the given matrix transform to the given objects
+ * @param {Array} matrix - the matrix to apply, as a simple 1d array of 16 elements
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to transform
+ * @returns {CSG} new CSG object , transformed
+ *
+ * @example
+ * const angle = 45
+ * let transformedShape = multmatrix([
+ * cos(angle), -sin(angle), 0, 10,
+ * sin(angle),  cos(angle), 0, 20,
+ * 0         ,           0, 1, 30,
+ * 0,           0, 0,  1
+ * ], sphere())
+ */
 function multmatrix (mat, obj) {
   console.log('multmatrix() not yet implemented')
 }
 
+/** create a minkowski sum of the given shapes
+ * @param {[Array]} vector - the axes to mirror the object(s) by
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to create a hull around
+ * @returns {CSG} new CSG object , mirrored
+ *
+ * @example
+ * let hulled = hull(rect(), circle())
+ */
 function minkowski () {
   console.log('minkowski() not yet implemented')
 }
 
+/** create a convex hull of the given shapes
+ * @param {[Array]} vector - the axes to mirror the object(s) by
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to create a hull around
+ * @returns {CSG} new CSG object , mirrored
+ *
+ * @example
+ * let hulled = hull(rect(), circle())
+ */
 function hull () {
   var pts = []
 
@@ -273,9 +340,16 @@ function hull () {
   }
 }
 
-// "Whosa whatsis" suggested "Chain Hull" as described at https://plus.google.com/u/0/105535247347788377245/posts/aZGXKFX1ACN
-// essentially hull A+B, B+C, C+D and then union those
-
+/** create a chain hull of the given shapes
+ * originally "Whosa whatsis" suggested "Chain Hull" ,
+ * as described at https://plus.google.com/u/0/105535247347788377245/posts/aZGXKFX1ACN
+ * essentially hull A+B, B+C, C+D and then union those
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to create a chain hull around
+ * @returns {CSG} new CSG object ,which a chain hull of the inputs
+ *
+ * @example
+ * let hulled = chain_hull(rect(), circle())
+ */
 function chain_hull () {
   var a = arguments
   var j = 0, closed = false
