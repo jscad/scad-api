@@ -51,7 +51,7 @@ function scale (scale, ...objects) {         // v, obj or array
  * @example
  * let rotatedSphere = rotate([0.2,15,1], sphere())
  */
-function rotate (rotation, objects) {
+function rotate () {
   let o
   let i
   let v

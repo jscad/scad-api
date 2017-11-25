@@ -2,7 +2,7 @@
 const { CSG } = require('@jscad/csg')
 const { circle } = require('./primitives2d')
 const { rotate_extrude } = require('./ops-extrusions')
-const { translate } = require('./ops-transformations')
+const { translate, scale } = require('./ops-transformations')
 
 /** Construct a cuboid
  * @param {Object} [options] - options for construction
@@ -23,42 +23,46 @@ const { translate } = require('./ops-transformations')
 function cube (params) {
   const defaults = {
     size: 1,
-    v: null,
     offset: [0, 0, 0],
     round: false,
     radius: 0,
     fn: 8
   }
 
-  const {v, round, r, fn} = Object.assign({}, defaults, params)
+  let {round, radius, fn} = Object.assign({}, defaults, params)
   let offset = [0, 0, 0]
+  let s = 1
+  let v = null
+  if (params && params.length) v = params
+  if (params && params.size && params.size.length) v = params.size // { size: [1,2,3] }
+  if (params && params.size && !params.size.length) s = params.size // { size: 1 }
+  if (params && (typeof params !== 'object')) s = params// (2)
+  if (params && params.round === true) {
+    round = true
+    radius = v && v.length ? (v[0] + v[1] + v[2]) / 30 : s / 10
+  }
+  if (params && params.radius) {
+    round = true
+  }
 
-  let s = 1, v = null, round = false, r = 0, fn = 8
-  if (p && p.length) v = p
-  if (p && p.size && p.size.length) v = p.size // { size: [1,2,3] }
-  if (p && p.size && !p.size.length) s = p.size // { size: 1 }
-  if (p && (typeof p !== 'object')) s = p// (2)
-  if (p && p.round === true) { round = true, r = v && v.length ? (v[0] + v[1] + v[2]) / 30 : s / 10 }
-  if (p && p.radius) { round = true, r = p.radius }
-
-  let x = s, y = s, z = s
+  let x = s
+  let y = s
+  let z = s
   if (v && v.length) {
-    x = v[0], y = v[1], z = v[2]
+    [x, y, z] = v
   }
   offset = [x / 2, y / 2, z / 2] // center: false default
-  let o = round
-    ? CSG.roundedCube({radius: [x / 2, y / 2, z / 2], roundradius: r, resolution: fn})
+  let object = round
+    ? CSG.roundedCube({radius: [x / 2, y / 2, z / 2], roundradius: radius, resolution: fn})
     : CSG.cube({radius: [x / 2, y / 2, z / 2]})
-  if (p && p.center && p.center.length) {
-    offset = [p.center[0] ? 0 : x / 2, p.center[1] ? 0 : y / 2, p.center[2] ? 0 : z / 2]
-  } else if (p && p.center === true) {
+  if (params && params.center && params.center.length) {
+    offset = [params.center[0] ? 0 : x / 2, params.center[1] ? 0 : y / 2, params.center[2] ? 0 : z / 2]
+  } else if (params && params.center === true) {
     offset = [0, 0, 0]
-  } else if (p && p.center === false) {
+  } else if (params && params.center === false) {
     offset = [x / 2, y / 2, z / 2]
   }
-  if (offset[0] || offset[1] || offset[2]) o = o.translate(offset)
-  // if(v&&v.length) o = o.scale(v)      // we don't scale afterwards, we already created box with the correct size
-  return o
+  return (offset[0] || offset[1] || offset[2]) ? translate(offset, object) : object
 }
 
 /** Construct a sphere
@@ -84,28 +88,30 @@ function sphere (params) {
 
   let {r, fn, type} = Object.assign({}, defaults, params)
   let offset = [0, 0, 0] // center: false (default)
-  if (params && (typeof params !== 'object')) r = params
+  if (params && (typeof params !== 'object')) {
+    r = params
+  } 
   // let zoffset = 0 // sphere() in openscad has no center:true|false
 
-  let output
-  if (type === 'geodesic') {
-    output = geodesicSphere(params)
-  } else {
-    output = CSG.sphere({radius: r, resolution: fn})
-  }
+  let output = type === 'geodesic' ? geodesicSphere(params) : CSG.sphere({radius: r, resolution: fn})
 
-  if (params && params.center && params.center.length) { // preparing individual x,y,z center
+  // preparing individual x,y,z center
+  if (params && params.center && params.center.length) {
     offset = [params.center[0] ? 0 : r, params.center[1] ? 0 : r, params.center[2] ? 0 : r]
   } else if (params && params.center === true) {
     offset = [0, 0, 0]
   } else if (params && params.center === false) {
     offset = [r, r, r]
   }
-  return (offset[0] || offset[1] || offset[2]) ? output : translate(offset, output)
+  return (offset[0] || offset[1] || offset[2]) ? translate(offset, output) : output 
 }
 
 function geodesicSphere (params) {
-  let r = 1, fn = 5
+  const defaults = {
+    r: 1,
+    fn: 5
+  }
+  let {r, fn} = Object.assign({}, defaults, params)
 
   let ci = [ // hard-coded data of icosahedron (20 faces, all triangles)
     [0.850651, 0.000000, -0.525731],
@@ -125,7 +131,9 @@ function geodesicSphere (params) {
     [4, 8, 2], [2, 11, 5], [3, 7, 6], [6, 11, 3], [8, 7, 3], [9, 8, 4], [11, 10, 5], [10, 11, 6], [8, 9, 7]]
 
   let geodesicSubDivide = function (p, fn, offset) {
-    let p1 = p[0], p2 = p[1], p3 = p[2]
+    let p1 = p[0]
+    let p2 = p[1]
+    let p3 = p[2]
     let n = offset
     let c = []
     let f = []
@@ -180,10 +188,10 @@ function geodesicSphere (params) {
         }
       }
     }
-    return { points: c, triangles: f, off: n }
+    return { points: c, triangles: f, offset: n }
   }
 
-  let mix3 = function (a, b, f) {
+  const mix3 = function (a, b, f) {
     let _f = 1 - f
     let c = []
     for (let i = 0; i < 3; i++) {
@@ -193,14 +201,13 @@ function geodesicSphere (params) {
   }
 
   if (params) {
-    if (p.fn) fn = Math.floor(p.fn / 6)
-    if (p.r) r = p.r
+    if (params.fn) fn = Math.floor(params.fn / 6)
   }
 
   if (fn <= 0) fn = 1
 
-  let q = []
-  let c = [], f = []
+  let c = []
+  let f = []
   let offset = 0
 
   for (let i = 0; i < ti.length; i++) {
@@ -209,7 +216,7 @@ function geodesicSphere (params) {
     f = f.concat(g.triangles)
     offset = g.offset
   }
-  return polyhedron({points: c, triangles: f}).scale(r)
+  return scale(r, polyhedron({points: c, triangles: f}))
 }
 
 /** Construct a cylinder
@@ -231,33 +238,34 @@ function geodesicSphere (params) {
  */
 function cylinder (params) {
   const defaults = {
+    r: 1,
     r1: 1,
     r2: 1,
     h: 1,
     fn: 32,
     round: false
   }
-  let r1 = 1, r2 = 1, h = 1, fn = 32, round = false
-  let a = arguments
+  let {r1, r2, h, fn, round} = Object.assign({}, defaults, params)
   let offset = [0, 0, 0]
-  if (p && p.d) {
-    r1 = r2 = p.d / 2
+  let a = arguments
+  if (params && params.d) {
+    r1 = r2 = params.d / 2
   }
-  if (p && p.r) {
-    r1 = p.r
-    r2 = p.r
+  if (params && params.r) {
+    r1 = params.r
+    r2 = params.r
   }
-  if (p && p.h) {
-    h = p.h
+  if (params && params.h) {
+    h = params.h
   }
-  if (p && (p.r1 || p.r2)) {
-    r1 = p.r1
-    r2 = p.r2
-    if (p.h) h = p.h
+  if (params && (params.r1 || params.r2)) {
+    r1 = params.r1
+    r2 = params.r2
+    if (params.h) h = params.h
   }
-  if (p && (p.d1 || p.d2)) {
-    r1 = p.d1 / 2
-    r2 = p.d2 / 2
+  if (params && (params.d1 || params.d2)) {
+    r1 = params.d1 / 2
+    r2 = params.d2 / 2
   }
 
   if (a && a[0] && a[0].length) {
@@ -267,29 +275,27 @@ function cylinder (params) {
     h = a[2]
     if (a.length === 4) fn = a[3]
   }
-  if (p && p.fn) fn = p.fn
-  // if(p&&p.center==true) zoffset = -h/2
-  if (p && p.round === true) round = true
-  let o
-  if (p && (p.start && p.end)) {
-    o = round
-      ? CSG.roundedCylinder({start: p.start, end: p.end, radiusStart: r1, radiusEnd: r2, resolution: fn})
-      : CSG.cylinder({start: p.start, end: p.end, radiusStart: r1, radiusEnd: r2, resolution: fn})
+
+  let object
+  if (params && (params.start && params.end)) {
+    object = round
+      ? CSG.roundedCylinder({start: params.start, end: params.end, radiusStart: r1, radiusEnd: r2, resolution: fn})
+      : CSG.cylinder({start: params.start, end: params.end, radiusStart: r1, radiusEnd: r2, resolution: fn})
   } else {
-    o = round
+    object = round
       ? CSG.roundedCylinder({start: [0, 0, 0], end: [0, 0, h], radiusStart: r1, radiusEnd: r2, resolution: fn})
       : CSG.cylinder({start: [0, 0, 0], end: [0, 0, h], radiusStart: r1, radiusEnd: r2, resolution: fn})
     let r = r1 > r2 ? r1 : r2
-    if (p && p.center && p.center.length) { // preparing individual x,y,z center
-      offset = [p.center[0] ? 0 : r, p.center[1] ? 0 : r, p.center[2] ? -h / 2 : 0]
-    } else if (p && p.center === true) {
+    if (params && params.center && params.center.length) { // preparing individual x,y,z center
+      offset = [params.center[0] ? 0 : r, params.center[1] ? 0 : r, params.center[2] ? -h / 2 : 0]
+    } else if (params && params.center === true) {
       offset = [0, 0, -h / 2]
-    } else if (p && p.center === false) {
+    } else if (params && params.center === false) {
       offset = [0, 0, 0]
     }
-    if (offset[0] || offset[1] || offset[2]) o = o.translate(offset)
+    object = (offset[0] || offset[1] || offset[2]) ? translate(offset, object) : object
   }
-  return o
+  return object
 }
 
 /** Construct a torus
@@ -334,19 +340,32 @@ function torus (params) {
   return result
 }
 
+/** Construct a polyhedron from the given triangles/ polygons/points
+ * @param {Object} [options] - options for construction
+ * @param {Array} [options.triangles] - triangles to build the polyhedron from
+ * @param {Array} [options.polygons] - polygons to build the polyhedron from
+ * @param {Array} [options.points] - points to build the polyhedron from
+ * @param {Array} [options.colors] - colors to apply to the polyhedron
+ * @returns {CSG} new polyhedron
+ *
+ * @example
+ * let torus1 = polyhedron({
+ *   points: [...]
+ * })
+ */
 function polyhedron (params) {
   let pgs = []
-  let ref = p.triangles || p.polygons
-  let colors = p.colors || null
+  let ref = params.triangles || params.polygons
+  let colors = params.colors || null
 
   for (let i = 0; i < ref.length; i++) {
     let pp = []
     for (let j = 0; j < ref[i].length; j++) {
-      pp[j] = p.points[ref[i][j]]
+      pp[j] = params.points[ref[i][j]]
     }
 
     let v = []
-    for (j = ref[i].length - 1; j >= 0; j--) { // --- we reverse order for examples of OpenSCAD work
+    for (let j = ref[i].length - 1; j >= 0; j--) { // --- we reverse order for examples of OpenSCAD work
       v.push(new CSG.Vertex(new CSG.Vector3D(pp[j][0], pp[j][1], pp[j][2])))
     }
     let s = CSG.Polygon.defaultShared
@@ -355,8 +374,8 @@ function polyhedron (params) {
     }
     pgs.push(new CSG.Polygon(v, s))
   }
-  let r = CSG.fromPolygons(pgs)
-  return r
+
+  return CSG.fromPolygons(pgs)
 }
 
 module.exports = {
