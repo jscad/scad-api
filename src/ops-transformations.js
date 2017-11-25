@@ -10,32 +10,17 @@ const { union } = require('./ops-booleans')
  * @example
  * let movedSphere = translate([10,2,0], sphere())
  */
-function translate (vector, objects) {      // v, obj or array
-  let object = objects
-  if (objects.length) {
-    for (let i = 0; i < objects.length; i++) { // FIXME/ why is union really needed ??
-      object = object.union(objects[i])
+function translate (vector, ...objects) {      // v, obj or array
+  // workaround needed to determine if we are dealing with an array of objects
+  const _objects = (objects.length >= 1 && objects[0].length) ? objects[0] : objects
+  let object = _objects[0]
+
+  if (_objects.length > 1) {
+    for (let i = 1; i < _objects.length; i++) { // FIXME/ why is union really needed ??
+      object = object.union(_objects[i])
     }
   }
   return object.translate(vector)
-}
-
-/** center an object in 2D/3D space
- * @param {[Boolean]} axis - either an array or single boolean to indicate which axis you want to center on
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to translate
- * @returns {CSG} new CSG object , translated by the given amount
- *
- * @example
- * let movedSphere = center(false, sphere())
- */
-function center (axis, objects) { // v, obj or array
-  let object = objects
-  if (objects.length) {
-    for (let i = 0; i < objects.length; i++) { // FIXME/ why is union really needed ??
-      object = object.union(objects[i])
-    }
-  }
-  return object.center(axis)
 }
 
 /** scale an object in 2D/3D space
@@ -46,11 +31,13 @@ function center (axis, objects) { // v, obj or array
  * @example
  * let scaledSphere = scale([0.2,15,1], sphere())
  */
-function scale (scale, objects) {         // v, obj or array
-  let object = objects
-  if (objects.length) {
-    for (let i = 0; i < objects.length; i++) { // FIXME/ why is union really needed ??
-      object = object.union(objects[i])
+function scale (scale, ...objects) {         // v, obj or array
+  const _objects = (objects.length >= 1 && objects[0].length) ? objects[0] : objects
+  let object = _objects[0]
+
+  if (_objects.length > 1) {
+    for (let i = 1; i < _objects.length; i++) { // FIXME/ why is union really needed ??
+      object = object.union(_objects[i])
     }
   }
   return object.scale(scale)
@@ -65,11 +52,11 @@ function scale (scale, objects) {         // v, obj or array
  * let rotatedSphere = rotate([0.2,15,1], sphere())
  */
 function rotate (rotation, objects) {
-  var o
-  var i
-  var v
-  var r = 1
-  var a = arguments
+  let o
+  let i
+  let v
+  let r = 1
+  let a = arguments
   if (!a[0].length) {        // rotate(r,[x,y,z],o)
     r = a[0]
     v = a[1]
@@ -90,6 +77,26 @@ function rotate (rotation, objects) {
   }
 }
 
+/** center an object in 2D/3D space
+ * @param {[Boolean]} axis - either an array or single boolean to indicate which axis you want to center on
+ * @param {[Object]} objects either a single or multiple CSG/CAG objects to translate
+ * @returns {CSG} new CSG object , translated by the given amount
+ *
+ * @example
+ * let movedSphere = center(false, sphere())
+ */
+function center (axis, ...objects) { // v, obj or array
+  const _objects = (objects.length >= 1 && objects[0].length) ? objects[0] : objects
+  let object = _objects[0]
+
+  if (_objects.length > 1) {
+    for (let i = 1; i < _objects.length; i++) { // FIXME/ why is union really needed ??
+      object = object.union(_objects[i])
+    }
+  }
+  return object.center(axis)
+}
+
 /** mirror an object in 2D/3D space
  * @param {[Array]} vector - the axes to mirror the object(s) by
  * @param {[Object]} objects either a single or multiple CSG/CAG objects to mirror
@@ -98,39 +105,41 @@ function rotate (rotation, objects) {
  * @example
  * let rotatedSphere = mirror([0.2,15,1], sphere())
  */
-function mirror (v, o) {
-  var a = Array.prototype.slice.call(arguments, 1, arguments.length),
-    o = a[0]
+function mirror (vector, ...objects) {
+  const _objects = (objects.length >= 1 && objects[0].length) ? objects[0] : objects
+  let object = _objects[0]
 
-  for (var i = 1; i < a.length; i++) {
-    o = o.union(a[i])
+  if (_objects.length > 1) {
+    for (let i = 1; i < _objects.length; i++) { // FIXME/ why is union really needed ??
+      object = object.union(_objects[i])
+    }
   }
-  var plane = new CSG.Plane(new CSG.Vector3D(v[0], v[1], v[2]).unit(), 0)
-  return o.mirrored(plane)
+  const plane = new CSG.Plane(new CSG.Vector3D(vector[0], vector[1], vector[2]).unit(), 0)
+  return object.mirrored(plane)
 }
 
 /** expand an object in 2D/3D space
- * @param {[Array]} vector - the axes to mirror the object(s) by
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to mirror
- * @returns {CSG} new CSG object , mirrored
+ * @param {float} radius - the radius to expand by
+ * @param {Object} object a CSG/CAG objects to expand
+ * @returns {CSG/CAG} new CSG/CAG object , expanded
  *
  * @example
  * let expanededShape = expand([0.2,15,1], sphere())
  */
-function expand (r, n, o) {
-  return o.expand(r, n)
+function expand (radius, n, object) {
+  return object.expand(radius, n)
 }
 
 /** contract an object(s) in 2D/3D space
- * @param {[Array]} vector - the axes to mirror the object(s) by
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to mirror
- * @returns {CSG} new CSG object , mirrored
+ * @param {float} radius - the radius to contract by
+ * @param {Object} object a CSG/CAG objects to contract
+ * @returns {CSG/CAG} new CSG/CAG object , contracted
  *
  * @example
  * let contractedShape = contract([0.2,15,1], sphere())
  */
-function contract (r, n, o) {
-  return o.contract(r, n)
+function contract (radius, n, object) {
+  return object.contract(radius, n)
 }
 
 /** apply the given matrix transform to the given objects
@@ -172,23 +181,22 @@ function minkowski () {
  * let hulled = hull(rect(), circle())
  */
 function hull () {
-  var pts = []
+  let pts = []
 
-  var a = arguments
+  let a = arguments
   if (a[0].length) a = a[0]
-  var done = []
+  let done = []
 
-  for (var i = 0; i < a.length; i++) {              // extract all points of the CAG in the argument list
-    var cag = a[i]
+  for (let i = 0; i < a.length; i++) {              // extract all points of the CAG in the argument list
+    let cag = a[i]
     if (!(cag instanceof CAG)) {
-      throw ('ERROR: hull() accepts only 2D forms / CAG')
-      return
+      throw new Error('ERROR: hull() accepts only 2D forms / CAG')
     }
-    for (var j = 0; j < cag.sides.length; j++) {
-      var x = cag.sides[j].vertex0.pos.x
-      var y = cag.sides[j].vertex0.pos.y
-      if (done['' + x + ',' + y])  // avoid some coord to appear multiple times
-           {
+    for (let j = 0; j < cag.sides.length; j++) {
+      let x = cag.sides[j].vertex0.pos.x
+      let y = cag.sides[j].vertex0.pos.y
+      // avoid some coord to appear multiple times
+      if (done['' + x + ',' + y]) {
         continue
       }
       pts.push({ x: x, y: y })
@@ -200,7 +208,7 @@ function hull () {
 
    // from http://www.psychedelicdevelopment.com/grahamscan/
    //    see also at https://github.com/bkiers/GrahamScan/blob/master/src/main/cg/GrahamScan.java
-  var ConvexHullPoint = function (i, a, d) {
+  let ConvexHullPoint = function (i, a, d) {
     this.index = i
     this.angle = a
     this.distance = d
@@ -221,7 +229,7 @@ function hull () {
     }
   }
 
-  var ConvexHull = function () {
+  let ConvexHull = function () {
     this.points = null
     this.indices = null
 
@@ -235,10 +243,10 @@ function hull () {
     }
 
     this.ccw = function (p1, p2, p3) {
-      var ccw = (this.points[p2].x - this.points[p1].x) * (this.points[p3].y - this.points[p1].y) -
+      let ccw = (this.points[p2].x - this.points[p1].x) * (this.points[p3].y - this.points[p1].y) -
                    (this.points[p2].y - this.points[p1].y) * (this.points[p3].x - this.points[p1].x)
-      if (ccw < 1e-5)      // we need this, otherwise sorting never ends, see https://github.com/Spiritdude/OpenJSCAD.org/issues/18
-            {
+      // we need this, otherwise sorting never ends, see https://github.com/Spiritdude/OpenJSCAD.org/issues/18
+      if (ccw < 1e-5) {
         return 0
       }
       return ccw
@@ -262,8 +270,8 @@ function hull () {
       this.points = _points
 
          // Find the lowest point
-      var min = 0
-      for (var i = 1; i < this.points.length; i++) {
+      let min = 0
+      for (let i = 1; i < this.points.length; i++) {
         if (this.points[i].y === this.points[min].y) {
           if (this.points[i].x < this.points[min].x) {
             min = i
@@ -274,11 +282,11 @@ function hull () {
       }
 
          // Calculate angle and distance from base
-      var al = new Array()
-      var ang = 0.0
-      var dist = 0.0
-      for (i = 0; i < this.points.length; i++) {
-        if (i == min) {
+      let al = []
+      let ang = 0.0
+      let dist = 0.0
+      for (let i = 0; i < this.points.length; i++) {
+        if (i === min) {
           continue
         }
         ang = this.angle(min, i)
@@ -292,10 +300,10 @@ function hull () {
       al.sort(function (a, b) { return a.compare(b) })
 
          // Create stack
-      var stack = new Array(this.points.length + 1)
-      var j = 2
-      for (i = 0; i < this.points.length; i++) {
-        if (i == min) {
+      let stack = new Array(this.points.length + 1)
+      let j = 2
+      for (let i = 0; i < this.points.length; i++) {
+        if (i === min) {
           continue
         }
         stack[j] = al[j - 2].index
@@ -304,9 +312,9 @@ function hull () {
       stack[0] = stack[this.points.length]
       stack[1] = min
 
-      var tmp
-      var M = 2
-      for (i = 3; i <= this.points.length; i++) {
+      let tmp
+      let M = 2
+      for (let i = 3; i <= this.points.length; i++) {
         while (this.ccw(stack[M - 1], stack[M], stack[i]) <= 0) {
           M--
         }
@@ -317,26 +325,23 @@ function hull () {
       }
 
       this.indices = new Array(M)
-      for (i = 0; i < M; i++) {
+      for (let i = 0; i < M; i++) {
         this.indices[i] = stack[i + 1]
       }
     }
   }
 
-  var hull = new ConvexHull()
+  let hull = new ConvexHull()
 
   hull.compute(pts)
-  var indices = hull.getIndices()
+  let indices = hull.getIndices()
 
   if (indices && indices.length > 0) {
-    var ch = []
-    for (var i = 0; i < indices.length; i++) {
+    let ch = []
+    for (let i = 0; i < indices.length; i++) {
       ch.push(pts[indices[i]])
-         // echo(pts[indices[i]]);
     }
-      // echo(ch.length+" points out",ch);
     return CAG.fromPoints(ch)
-      // return CAG.fromPointsNoCheck(ch);
   }
 }
 
@@ -350,9 +355,14 @@ function hull () {
  * @example
  * let hulled = chain_hull(rect(), circle())
  */
-function chain_hull () {
-  var a = arguments
-  var j = 0, closed = false
+function chain_hull (params, objects) {
+  /*const defaults = {
+    closed: false
+  }
+  const closed = Object.assign({}, defaults, params)*/
+  let a = arguments
+  let closed = false
+  let j = 0
 
   if (a[j].closed !== undefined) {
     closed = a[j++].closed
@@ -360,11 +370,12 @@ function chain_hull () {
 
   if (a[j].length) { a = a[j] }
 
-  var h = []; var n = a.length - (closed ? 0 : 1)
-  for (var i = 0; i < n; i++) {
-    h.push(hull(a[i], a[(i + 1) % a.length]))
+  let hulls = []
+  let hullsAmount = a.length - (closed ? 0 : 1)
+  for (let i = 0; i < hullsAmount; i++) {
+    hulls.push(hull(a[i], a[(i + 1) % a.length]))
   }
-  return union(h)
+  return union(hulls)
 }
 
 module.exports = {
