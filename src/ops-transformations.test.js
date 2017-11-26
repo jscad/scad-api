@@ -83,7 +83,7 @@ test('rotate (multiple items, 2d)', t => {
   sideEquals(t, obs.sides[obs.sides.length - 1], [[0, 0], [0.9848077530122078, 0]])
 })
 
-/*test('scale (single item)', t => {
+test('scale (single item)', t => {
   const op1 = cube()
   const obs = scale([2, 1, 1], op1)
 
@@ -268,4 +268,4 @@ test('chain_hull (multiple items, 2d)', t => {
 
   t.deepEqual(obs.sides[0], {vertex0: {pos: {_x: 0, _y: 1.0000000000000002}}, vertex1: {pos: {_x: 0, _y: 0}}})
   t.deepEqual(obs.sides[obs.sides.length - 1], {vertex0: {pos: {_x: 0.01921471959676957, _y: 1.1950903220161286}}, vertex1: {pos: {_x: 0, _y: 1.0000000000000002}}})
-}) */
+})

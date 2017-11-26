@@ -322,10 +322,11 @@ function torus (params) {
   }
   params = Object.assign({}, defaults, params)
 
+  /* possible enhancements ? declarative limits
   const limits = {
     fni: {min: 3},
     fno: {min: 3}
-  }
+  }*/
 
   let {ri, ro, fni, fno, roti} = params
 
