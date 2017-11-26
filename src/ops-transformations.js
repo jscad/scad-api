@@ -4,7 +4,7 @@ const { union } = require('./ops-booleans')
 
 /** translate an object in 2D/3D space
  * @param {Object} vector - 3D vector to translate the given object(s) by
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to translate
+ * @param {Object(s)|Array} objects either a single or multiple CSG/CAG objects to translate
  * @returns {CSG} new CSG object , translated by the given amount
  *
  * @example
@@ -24,8 +24,8 @@ function translate (vector, ...objects) {      // v, obj or array
 }
 
 /** scale an object in 2D/3D space
- * @param {[Array]} scale - either an array or simple number to scale object(s) by
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to scale
+ * @param {Float|Array} scale - either an array or simple number to scale object(s) by
+ * @param {Object(s)|Array} objects either a single or multiple CSG/CAG objects to scale
  * @returns {CSG} new CSG object , scaled by the given amount
  *
  * @example
@@ -44,8 +44,8 @@ function scale (scale, ...objects) {         // v, obj or array
 }
 
 /** rotate an object in 2D/3D space
- * @param {[Array]} rotation - either an array or simple number to rotate object(s) by
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to rotate
+ * @param {Float|Array} rotation - either an array or simple number to rotate object(s) by
+ * @param {Object(s)|Array} objects either a single or multiple CSG/CAG objects to rotate
  * @returns {CSG} new CSG object , rotated by the given amount
  *
  * @example
@@ -78,8 +78,8 @@ function rotate () {
 }
 
 /** center an object in 2D/3D space
- * @param {[Boolean]} axis - either an array or single boolean to indicate which axis you want to center on
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to translate
+ * @param {Boolean|Array} axis - either an array or single boolean to indicate which axis you want to center on
+ * @param {Object(s)|Array} objects either a single or multiple CSG/CAG objects to translate
  * @returns {CSG} new CSG object , translated by the given amount
  *
  * @example
@@ -98,8 +98,8 @@ function center (axis, ...objects) { // v, obj or array
 }
 
 /** mirror an object in 2D/3D space
- * @param {[Array]} vector - the axes to mirror the object(s) by
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to mirror
+ * @param {Array} vector - the axes to mirror the object(s) by
+ * @param {Object(s)|Array} objects either a single or multiple CSG/CAG objects to mirror
  * @returns {CSG} new CSG object , mirrored
  *
  * @example
@@ -144,7 +144,7 @@ function contract (radius, n, object) {
 
 /** apply the given matrix transform to the given objects
  * @param {Array} matrix - the matrix to apply, as a simple 1d array of 16 elements
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to transform
+ * @param {Object(s)|Array} objects either a single or multiple CSG/CAG objects to transform
  * @returns {CSG} new CSG object , transformed
  *
  * @example
@@ -161,8 +161,7 @@ function multmatrix (mat, obj) {
 }
 
 /** create a minkowski sum of the given shapes
- * @param {[Array]} vector - the axes to mirror the object(s) by
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to create a hull around
+ * @param {Object(s)|Array} objects either a single or multiple CSG/CAG objects to create a hull around
  * @returns {CSG} new CSG object , mirrored
  *
  * @example
@@ -173,7 +172,7 @@ function minkowski () {
 }
 
 /** create a convex hull of the given shapes
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to create a hull around
+ * @param {Object(s)|Array} objects either a single or multiple CSG/CAG objects to create a hull around
  * @returns {CSG} new CSG object , a hull around the given shapes
  *
  * @example
@@ -345,10 +344,10 @@ function hull () {
 }
 
 /** create a chain hull of the given shapes
- * originally "Whosa whatsis" suggested "Chain Hull" ,
+ * Originally "Whosa whatsis" suggested "Chain Hull" ,
  * as described at https://plus.google.com/u/0/105535247347788377245/posts/aZGXKFX1ACN
  * essentially hull A+B, B+C, C+D and then union those
- * @param {[Object]} objects either a single or multiple CSG/CAG objects to create a chain hull around
+ * @param {Object(s)|Array} objects either a single or multiple CSG/CAG objects to create a chain hull around
  * @returns {CSG} new CSG object ,which a chain hull of the inputs
  *
  * @example

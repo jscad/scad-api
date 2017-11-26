@@ -5,7 +5,7 @@ const { CAG } = require('@jscad/csg')
 // FIXME should this be lazy ? in which case, how do we deal with 2D/3D combined
 // TODO we should have an option to set behaviour as first parameter
 /** union/ combine the given shapes
- * @param {[Object]} objects - objects to combine : can be given
+ * @param {Object(s)|Array} objects - objects to combine : can be given
  * - one by one: union(a,b,c) or
  * - as an array: union([a,b,c])
  * @returns {CSG} new CSG object, the union of all input shapes
@@ -46,7 +46,7 @@ function union () {
 
 /** difference/ subtraction of the given shapes ie:
  * cut out C From B From A ie : a - b - c etc
- * @param {[Object]} objects - objects to subtract
+ * @param {Object(s)|Array} objects - objects to subtract
  * can be given
  * - one by one: difference(a,b,c) or
  * - as an array: difference([a,b,c])
@@ -70,8 +70,8 @@ function difference () {
   return object
 }
 
-/** intersection of the given shapes: ie keep only the common parts between all shapes
- * @param {[Object]} objects - objects to intersect
+/** intersection of the given shapes: ie keep only the common parts between the given shapes
+ * @param {Object(s)|Array} objects - objects to intersect
  * can be given
  * - one by one: intersection(a,b,c) or
  * - as an array: intersection([a,b,c])

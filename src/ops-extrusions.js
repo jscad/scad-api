@@ -5,7 +5,7 @@ const {cagToPointsArray, clamp, rightMultiply1x3VectorToArray, polygonFromPoints
 // FIXME: right now linear & rotate extrude take params first, while rectangular_extrude
 // takes params second ! confusing and incoherent ! needs to be changed (BREAKING CHANGE !)
 
-/** linear extrude
+/** linear extrusion of the input 2d shape
  * @param {Object} [options] - options for construction
  * @param {Float} [options.height=1] - height of the extruded shape
  * @param {Integer} [options.slices=10] - number of intermediary steps/slices
@@ -37,7 +37,7 @@ function linear_extrude (params, baseShape) {
   return output
 }
 
-/** rotate extrude / revolve
+/** rotate extrusion / revolve of the given 2d shape
  * @param {Object} [options] - options for construction
  * @param {Integer} [options.fn=1] - resolution/number of segments of the extrusion
  * @param {Float} [options.startAngle=1] - start angle of the extrusion, in degrees
@@ -181,7 +181,7 @@ function rotate_extrude (params, baseShape) {
   return CSG.fromPolygons(polygons).reTesselated().canonicalized()
 }
 
-/** rectangular extrude
+/** rectangular extrusion of the given array of points
  * @param {Array} basePoints array of points (nested) to extrude from
  * layed out like [ [0,0], [10,0], [5,10], [0,10] ]
  * @param {Object} [options] - options for construction
