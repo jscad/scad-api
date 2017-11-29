@@ -354,10 +354,11 @@ function hull () {
  * let hulled = chain_hull(rect(), circle())
  */
 function chain_hull (params, objects) {
-  /*const defaults = {
+  /*
+  const defaults = {
     closed: false
   }
-  const closed = Object.assign({}, defaults, params)*/
+  const closed = Object.assign({}, defaults, params) */
   let a = arguments
   let closed = false
   let j = 0
