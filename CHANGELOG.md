@@ -1,3 +1,8 @@
+<a name="0.4.2"></a>
+## [0.4.2](https://github.com/jscad/scad-api/compare/v0.4.1...v0.4.2) (2017-12-02)
+
+
+
 <a name="0.4.1"></a>
 ## [0.4.1](https://github.com/jscad/scad-api/compare/v0.4.0...v0.4.1) (2017-11-24)
 
