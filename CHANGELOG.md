@@ -1,3 +1,13 @@
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/jscad/scad-api/compare/v0.4.2...v0.5.0) (2017-12-31)
+
+
+### Features
+
+* **transform:** added transform function : implementation of matrix transform as an operation ([#36](https://github.com/jscad/scad-api/issues/36)) ([e392794](https://github.com/jscad/scad-api/commit/e392794))
+
+
+
 <a name="0.4.2"></a>
 ## [0.4.2](https://github.com/jscad/scad-api/compare/v0.4.1...v0.4.2) (2017-12-02)
 

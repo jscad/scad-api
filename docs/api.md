@@ -79,6 +79,9 @@ cut out C From B From A ie : a - b - c etc</p>
 <dt><a href="#rotate">rotate(rotation, objects)</a> ⇒ <code>CSG</code></dt>
 <dd><p>rotate an object in 2D/3D space</p>
 </dd>
+<dt><a href="#transform">transform(matrix, ...objects)</a> ⇒ <code>CSG</code></dt>
+<dd><p>apply the given matrix transform to the given objects</p>
+</dd>
 <dt><a href="#center">center(axis, ...objects)</a> ⇒ <code>CSG</code></dt>
 <dd><p>center an object in 2D/3D space</p>
 </dd>
@@ -90,9 +93,6 @@ cut out C From B From A ie : a - b - c etc</p>
 </dd>
 <dt><a href="#contract">contract(radius, object)</a> ⇒ <code>CSG/CAG</code></dt>
 <dd><p>contract an object(s) in 2D/3D space</p>
-</dd>
-<dt><a href="#multmatrix">multmatrix(matrix, objects)</a> ⇒ <code>CSG</code></dt>
-<dd><p>apply the given matrix transform to the given objects</p>
 </dd>
 <dt><a href="#minkowski">minkowski(objects)</a> ⇒ <code>CSG</code></dt>
 <dd><p>create a minkowski sum of the given shapes</p>
@@ -438,6 +438,29 @@ rotate an object in 2D/3D space
 ```js
 let rotatedSphere = rotate([0.2,15,1], sphere())
 ```
+<a name="transform"></a>
+
+## transform(matrix, ...objects) ⇒ <code>CSG</code>
+apply the given matrix transform to the given objects
+
+**Kind**: global function  
+**Returns**: <code>CSG</code> - new CSG object , transformed  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| matrix | <code>Array</code> | the 4x4 matrix to apply, as a simple 1d array of 16 elements |
+| ...objects | <code>Object(s)</code> \| <code>Array</code> | either a single or multiple CSG/CAG objects to transform |
+
+**Example**  
+```js
+const angle = 45
+let transformedShape = transform([
+cos(angle), -sin(angle), 0, 10,
+sin(angle),  cos(angle), 0, 20,
+0         ,           0, 1, 30,
+0,           0, 0,  1
+], sphere())
+```
 <a name="center"></a>
 
 ## center(axis, ...objects) ⇒ <code>CSG</code>
@@ -505,29 +528,6 @@ contract an object(s) in 2D/3D space
 **Example**  
 ```js
 let contractedShape = contract([0.2,15,1], sphere())
-```
-<a name="multmatrix"></a>
-
-## multmatrix(matrix, objects) ⇒ <code>CSG</code>
-apply the given matrix transform to the given objects
-
-**Kind**: global function  
-**Returns**: <code>CSG</code> - new CSG object , transformed  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| matrix | <code>Array</code> | the matrix to apply, as a simple 1d array of 16 elements |
-| objects | <code>Object(s)</code> \| <code>Array</code> | either a single or multiple CSG/CAG objects to transform |
-
-**Example**  
-```js
-const angle = 45
-let transformedShape = multmatrix([
-cos(angle), -sin(angle), 0, 10,
-sin(angle),  cos(angle), 0, 20,
-0         ,           0, 1, 30,
-0,           0, 0,  1
-], sphere())
 ```
 <a name="minkowski"></a>
 
